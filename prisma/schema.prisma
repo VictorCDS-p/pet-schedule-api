@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String  @id @default(uuid())
+  nome      String
+  email     String  @unique
+  senha     String
+  pets      Pet[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Pet {
+  id        String  @id @default(uuid())
+  nome      String
+  especie   String
+  donoId    String
+  dono      User    @relation(fields: [donoId], references: [id], onDelete: Cascade)
+  agendamentos Appointment[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Appointment {
+  id        String  @id @default(uuid())
+  petId     String
+  pet       Pet     @relation(fields: [petId], references: [id], onDelete: Cascade)
+  dataHora  DateTime @unique  // Garante que não existam dois agendamentos no mesmo horário
+  status    Status   @default(pendente)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Status {
+  pendente
+  confirmado
+  cancelado
+}
