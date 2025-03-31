@@ -1,5 +1,5 @@
 {
-  "name": "ong-api",
+  "name": "pet-schedule-api",
   "version": "1.0.0",
   "main": "index.js",
   "type": "module",
